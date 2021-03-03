@@ -1,6 +1,6 @@
 {
   "name": "storken-broadcast",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "babel src/storken-broadcast.js --ignore '**/*.test.js' --out-dir dist -d",
     "prepublishOnly": "yarn build"
