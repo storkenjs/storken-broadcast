@@ -1,3 +1,12 @@
+const debounce = (func, delay = 100) => {
+  let timeout
+  return (...args) => {
+    const context = this
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func.apply(context, args), delay)
+  }
+}
+
 export const StorkenBroadcast = (storken) => {
   const { namespace, key, broadcast } = storken.opts
 
