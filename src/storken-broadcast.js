@@ -7,8 +7,9 @@ const debounce = (func, delay = 100) => {
   }
 }
 
-export const StorkenBroadcast = (storken) => {
-  const { namespace, key, broadcast } = storken.opts
+const StorkenBroadcast = (storken) => {
+  const { namespace, key, id } = storken
+  const { broadcast } = storken.opts
 
   if (!broadcast || !BroadcastChannel) {
     return
@@ -17,9 +18,10 @@ export const StorkenBroadcast = (storken) => {
   storken.channel = new BroadcastChannel(namespace + key)
 
   storken.channel.addEventListener('message', debounce(e => {
-    if (!e.data || e.data.id === storken.id) {
+    if (!e.data || e.data.id === id) {
       return
     }
+
     // Avoids "object cannot be cloned" error.
     const newValue = typeof e.data.message === 'object'
       ? JSON.parse(JSON.stringify(e.data.message))
@@ -29,10 +31,10 @@ export const StorkenBroadcast = (storken) => {
   }, 200))
 
   storken.addEventListener('set', (val, args, opts) => {
-    Object.assign({ broadcast: true, force: false }, opts)
-    if (storken.channel && opts.broadcast && broadcast) {
+    opts = Object.assign({ broadcast: true, force: false }, opts)
+    if (storken.channel && broadcast && opts.broadcast) {
       storken.channel.postMessage({
-        id: storken.id,
+        id,
         message: val,
         disableSetter: !!opts.disableSetter
       })
