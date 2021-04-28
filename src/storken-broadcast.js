@@ -11,7 +11,7 @@ const StorkenBroadcast = (storken) => {
   const { namespace, key, id } = storken
   const { broadcast } = storken.opts
 
-  if (!broadcast || !BroadcastChannel) {
+  if (!broadcast || !window?.BroadcastChannel) {
     return
   }
 
