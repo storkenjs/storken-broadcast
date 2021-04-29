@@ -30,7 +30,7 @@ const StorkenBroadcast = (storken) => {
     storken.set(newValue, { broadcast: false })
   }, 200))
 
-  storken.addEventListener('set', (val, args, opts) => {
+  storken.on('set', (val, args, opts) => {
     opts = Object.assign({ broadcast: true, force: false }, opts)
     if (storken.channel && broadcast && opts.broadcast) {
       storken.channel.postMessage({
